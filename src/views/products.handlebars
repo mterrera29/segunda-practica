@@ -1,0 +1,63 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Hogar Commerce</a>
+  </div>
+</nav>
+    <div class="d-flex justify-content-between p-3" style="background-color: #f1f1f1;">
+{{#if user.userAdmin}}
+        <h3>Bienvenido administrador {{user.lastName}}, {{user.firstName}}</h3>
+    {{else}}
+       <h3>Bienvenido usuario {{user.lastName}}, {{user.firstName}}</h3>
+    {{/if }}
+        <a href="http://localhost:3030/logout" class="btn btn-primary"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    </div>
+{{#if isValid}}
+<div >
+  <div class="row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-center m-2">
+
+    {{#each docs}}
+
+    <div class="card text-center mt-3 m-2 d-flex justify-content-center " style="width: 18rem; display:flex; justify-content:center">
+      <div>
+      <img src="{{this.thumbnail}}" class="card-img-top m-2" alt="..." style="width: 200px; height: 200px;">
+
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><strong>{{this.title}}</strong> - ${{this.price}}</h5>
+        <p class="card-text">{{this.description}}</p>
+        <p class="card-text"><strong>Categoría: </strong>{{this.category}}</p>
+        <a href="#" class="btn btn-primary">Add to Cart</a>
+      </div>
+    </div>
+    <br/>
+    {{/each}}
+
+  </div>
+</div>
+<br/>
+<nav aria-label="Page navigation example">
+  <ul class="pagination d-flex justify-content-center m-2">
+        <li class= {{#if hasPrevPage}} "page-item"{{else}} "page-item disabled" {{/if}}>
+        <a class="page-link" href={{this.prevLink}}><< Anterior</a>
+        </li>
+      {{#if hasPrevPage}} 
+      <li class="page-item">
+      <a class="page-link" href={{this.prevLink}}>{{this.prevPage}}</a>
+      </li>
+      {{/if}}
+    <li class="page-item active">
+      <a class="page-link" href="#">{{this.page}}</a>
+      </li>
+      {{#if hasNextPage}} 
+      <li class="page-item">
+      <a class="page-link" href={{this.nextLink}}>{{this.nextPage}}</a>
+      </li>
+      {{/if}}
+    <li class={{#if hasNextPage}} "page-item"{{else}} "page-item disabled" {{/if}}>
+        <a class="page-link" href={{this.nextLink}}>Siguiente >></a>
+        </li>
+  </ul>
+</nav>
+{{else}}
+<h1  class="d-flex justify-content-center m-2">No hay productos para mostrar en esta página</h1>
+{{/if}}

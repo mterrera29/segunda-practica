@@ -1,0 +1,32 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Hogar E-Commerce</a>
+  </div>
+</nav>
+{{#if isValid}}
+<h1 class="d-flex justify-content-center m-2">🛒Carrito {{id}}</h1>
+<div >
+  <div class="row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-center m-2">
+
+    {{#each products}}
+
+    <div class="card text-center mt-3 m-2 d-flex justify-content-center " style="width: 18rem; display:flex; justify-content:center">
+      <div>
+      <img src="{{this.product.thumbnail}}" class="card-img-top m-2" alt="..." style="width: 200px; height: 200px;">
+
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><strong>{{this.product.title}}</strong> - ${{this.product.price}}</h5>
+        <p class="card-text">{{this.product.description}}</p>
+        <p class="card-text"><strong>Cantidad: </strong>{{this.quantity}}</p>
+        {{!-- <a href="#" class="btn btn-primary">Add to Cart</a> --}}
+      </div>
+    </div>
+    <br/>
+    {{/each}}
+
+  </div>
+</div>
+{{else}}
+<h1  class="d-flex justify-content-center m-2">No hay carritos con esa ID</h1>
+{{/if}}
