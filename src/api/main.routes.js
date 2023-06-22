@@ -17,11 +17,10 @@ const mainRoutes = (store) => {
 router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/githubfail' }), async (req, res) => {
     req.session.user = req.user;
     if(req.user.role === "admin") req.session.userAdmin = true
-    req.session.userValidated = true;
     req.session.errorMessage = '';
     req.session.lastName = req.user.lastName;
     req.session.firstName = req.user.firstName;
-    req.session.userValidated = true //// esto esta mal!
+    req.session.userValidated = true
     res.redirect('/');
 });
 
