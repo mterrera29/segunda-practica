@@ -11,24 +11,28 @@ initializePassport();
 const mainRoutes = (store) => {    
   const router = Router();
 
-  router.get('/github', passport.authenticate('github', { scope: ['user:email'] }),authorization('admin'), async (req, res) => {
-  });
-  router.get('/current2', authentication('github'),authorization('admin'), async (req, res) => {
-    res.send({ status: 'OK', data: req.user });
+  router.get('/github', passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => {
   });
 
-router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/fail' }), async (req, res) => {
+router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/githubfail' }), async (req, res) => {
     req.session.user = req.user;
-    req.session.userValidated = true
-    res.redirect('/api/products');
+    if(req.user.role === "admin") req.session.userAdmin = true
+    req.session.userValidated = true;
+    req.session.errorMessage = '';
+    req.session.lastName = req.user.lastName;
+    req.session.firstName = req.user.firstName;
+    req.session.userValidated = true //// esto esta mal!
+    res.redirect('/');
 });
 
 router.get('/', async (req, res) => {
     store.get(req.sessionID, async (err, data) => {
         if (err) console.log(`Error al recuperar datos de sesión (${err})`);
         if (data !== null && req.session.userValidated) {
+            console.log("chau")
               res.redirect('http://localhost:3030/api/products')
         } else {
+            console.log("hola")
             res.render('login', { sessionInfo: req.session});
         }
 
@@ -54,7 +58,7 @@ router.post('/login', async (req, res) => {
         req.session.errorMessage = '';
         req.session.firstName = user.firstName;
         req.session.lastName = user.lastName;
-        if(login_email === "adminCoder@coder.com") req.session.userAdmin = true
+        if(user.role === "admin") req.session.userAdmin = true
     } 
     res.redirect('http://localhost:3030')
     
@@ -73,6 +77,10 @@ router.get('/logout', async (req, res) => {
 
 router.get('/regfail', async (req, res) => {
     res.render('registration_err', {});
+});
+
+router.get('/githubfail', async (req, res) => {
+    res.render('login_github_err', {});
 });
 
 router.post('/register', async (req, res) => {

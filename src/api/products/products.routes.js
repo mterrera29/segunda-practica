@@ -32,7 +32,8 @@ router.get('/products', validate,  async (req,res)=>{
         result.prevLink = result.hasPrevPage?`products?page=${result.prevPage}`:'';
         result.nextLink = result.hasNextPage?`products?page=${result.nextPage}`:'';
         result.isValid= !(page<=0||page>result.totalPages) 
-        result.user = req.session.user || req.session
+        console.log(req.session)
+        result.user = req.session
         res.render('products',result)
     } catch (err) {
         res.status(500).send({ status: 'ERR', error: err.message });
