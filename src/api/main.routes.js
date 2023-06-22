@@ -12,7 +12,6 @@ const mainRoutes = (store) => {
   const router = Router();
 
   router.get('/github', passport.authenticate('github', { scope: ['user:email'] }),authorization('admin'), async (req, res) => {
-    // Vacío
   });
   router.get('/current2', authentication('github'),authorization('admin'), async (req, res) => {
     res.send({ status: 'OK', data: req.user });
@@ -42,7 +41,7 @@ router.get('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     req.session.userValidated = false;
-    const { login_email, login_password } = req.body; // Desestructuramos el req.body
+    const { login_email, login_password } = req.body; 
 
     const user = await userModel.findOne({ userName: login_email });
 
@@ -76,10 +75,8 @@ router.get('/regfail', async (req, res) => {
     res.render('registration_err', {});
 });
 
-// Solo incluímos passport desde el archivo de estrategias y realizamos la llamada al middleware de autenticación
-// En caso de existir ya el mail en bbdd, redireccionará a /regfail, sino permitirá continuar con /register
 router.post('/register', async (req, res) => {
-    const { firstName, lastName, userName, password, age } = req.body; // Desestructuramos los elementos del body
+    const { firstName, lastName, userName, password, age } = req.body; 
     if (!firstName || !lastName || !userName || !password ) res.status(400).send('Faltan campos obligatorios en el body');
     const newUser = { firstName: firstName, lastName: lastName, userName: userName, age: age, password: createHash(password)};
     const user = await userModel.findOne({ userName: userName });
